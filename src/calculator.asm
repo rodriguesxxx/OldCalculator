@@ -20,8 +20,10 @@ section .data
 
     SYS_WRITE equ 0x4
     SYS_EXIT equ 0x1
+    
+    LINE_BREAK equ 0xA
 
-    message: db 'Hello world'
+    message: db 'Hello world', LINE_BREAK
     len: equ $ - message
 
 section .text
