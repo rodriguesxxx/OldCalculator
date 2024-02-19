@@ -15,26 +15,49 @@
 
 section .data
 
-    RET_EXIT equ 0x0
-    STD_OUT equ 0x1
-
-    SYS_WRITE equ 0x4
     SYS_EXIT equ 0x1
+    SYS_FORK equ 0x2
+    SYS_READ equ 0x3
+    SYS_WRITE equ 0x4
     
     LINE_BREAK equ 0xA
 
-    message: db 'Hello world', LINE_BREAK
-    len: equ $ - message
+    inputMsg: db 'Insira um numero: '
+    lenInputMsg: equ $ - inputMsg
+    ouputMsg: db 'Você inseriu o numero: '
+    lenOutputMsg: equ $ - ouputMsg
+    numberSize: equ 5
+
+section .bss
+
+    num: resb numberSize
 
 section .text
-
     global _start
 
 _start:
 
-    mov ECX, message
-    mov EDX, len
-    mov EBX, STD_OUT
+    mov ECX, inputMsg
+    mov EDX, lenInputMsg
+    mov EBX, SYS_EXIT
+    mov EAX, SYS_WRITE
+    int 0x80
+
+    mov ECX, num
+    mov EDX, numberSize
+    mov EBX, SYS_FORK
+    mov EAX, SYS_READ
+    int 0x80
+
+    mov ECX, ouputMsg
+    mov EDX, lenOutputMsg
+    mov EBX, SYS_EXIT
+    mov EAX, SYS_WRITE
+    int 0x80
+
+    mov ECX, num
+    mov EDX, numberSize
+    mov EBX, SYS_EXIT
     mov EAX, SYS_WRITE
     int 0x80
 
